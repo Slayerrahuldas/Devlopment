@@ -74,7 +74,7 @@ function updateDropdowns(filteredData) {
 
     filteredData.forEach((row) => {
         if (row["ME Name"]) dropdowns["filter-me-name"].values.add(row["ME Name"]);
-        if (row["Day"]) dropdowns["filter-Day"].values.add(row["Day"]);
+        if (row["Day"]) dropdowns["filter-day"].values.add(row["Day"]);
     });
 
     Object.keys(dropdowns).forEach((id) => {
@@ -95,7 +95,7 @@ function populateSelectDropdown(id, optionsSet, headerName) {
 
 // Function to reset filters
 function resetFilters() {
-    filterButton1Active = filterButton2Active = false;
+    filterButtonActive = false;
     document.getElementById("filter-button").style.backgroundColor = "blue";
 
     document.getElementById("search-bar").value = "";
@@ -121,7 +121,7 @@ function initialize() {
 
     document.getElementById("filter-button").addEventListener("click", () => {
         filterButton1Active = !filterButtonActive;
-        document.getElementById("filter-button").style.backgroundColor = filterButton1Active ? "green" : "blue";
+        document.getElementById("filter-button").style.backgroundColor = filterButtonActive ? "green" : "blue";
         applyFilters();
     });
 
