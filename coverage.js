@@ -29,8 +29,7 @@ function populateTable(data) {
 
         // Add data cells
         const columns = [
-            "HUL Code", "HUL Outlet Name", "PLG",
-            "ME Name", "Beat", "ECO", "BTD"
+            "HUL Code", "HUL Outlet Name", "ME Name", "Beat", "ECO", "BTD"
         ];
         
         columns.forEach((key) => {
