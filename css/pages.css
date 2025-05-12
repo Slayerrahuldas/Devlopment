@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+	margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+	text-align: center;
+}
+
+header {
+    background-color: #2C3E50;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 300;
+}
+
+
+.navbar {
+    background-color: #bbb;
+    height: 30px;
+    overflow: hidden;
+}
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 2px 0;
+    display: flex;
+    justify-content: left;
+}
+
+.navbar li {
+    margin: 10 15px;
+}
+
+.navbar a {
+	margin: 15px;
+    text-decoration: none;
+    color: #E74C3C;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #F1C40F;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#search-bar {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filters-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.filters-container select {
+    width: 22%; /* Adjust width as necessary */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 100px;
+    margin: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
