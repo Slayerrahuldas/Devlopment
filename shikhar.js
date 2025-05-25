@@ -29,7 +29,6 @@ function populateTable(data) {
             "Status",
             "Shikhar",
             "BTD",
-            "ME Name",
             "Beat"
         ];
 
