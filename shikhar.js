@@ -1,9 +1,10 @@
 let filterButtonActive = false;
 let jsonData = [];
 
+// Fetch JSON data and initialize
 async function fetchData() {
     try {
-        const response = await fetch("shikhar.json");
+        const response = await fetch("shikhar.json"); // Adjust filename if needed
         if (!response.ok) throw new Error("Failed to fetch data.");
         jsonData = await response.json();
         initialize();
@@ -12,6 +13,7 @@ async function fetchData() {
     }
 }
 
+// Populate table with filtered data
 function populateTable(data) {
     const tableBody = document.getElementById("table-body");
     tableBody.innerHTML = "";
@@ -29,14 +31,12 @@ function populateTable(data) {
             "Status",
             "Shikhar",
             "BTD",
-            "ME Name",
             "Beat",
-            "Day"
         ];
 
         columns.forEach((key) => {
             const cell = document.createElement("td");
-            cell.textContent = item[key] ?? "";
+            cell.textContent = item[key] !== undefined ? item[key] : "";
             row.appendChild(cell);
         });
 
@@ -44,19 +44,22 @@ function populateTable(data) {
     });
 }
 
+// Apply all filters
 function applyFilters() {
     const meName = document.getElementById("filter-me-name").value;
     const day = document.getElementById("filter-day").value;
     const searchQuery = document.getElementById("search-bar").value.toLowerCase();
 
-    let filteredData = jsonData.filter((row) => {
+    const filteredData = jsonData.filter((row) => {
+        const shikharValue = parseFloat(row["Shikhar"]);
+
         return (
             (meName === "" || row["ME Name"] === meName) &&
             (day === "" || row["Day"] === day) &&
             (searchQuery === "" ||
                 (row["HUL Code"] && row["HUL Code"].toLowerCase().includes(searchQuery)) ||
                 (row["HUL Outlet Name"] && row["HUL Outlet Name"].toLowerCase().includes(searchQuery))) &&
-            (!filterButtonActive || (row["Shikhar"] && parseFloat(row["Shikhar"]) < 500))
+            (!filterButtonActive || (!isNaN(shikharValue) && shikharValue < 500))
         );
     });
 
@@ -64,41 +67,43 @@ function applyFilters() {
     updateDropdowns(filteredData);
 }
 
+// Populate dropdowns with current values
 function updateDropdowns(filteredData) {
-    const dropdowns = {
-        "filter-me-name": { header: "ME Name", values: new Set() },
-        "filter-day": { header: "Day", values: new Set() }
-    };
+    const meSet = new Set();
+    const daySet = new Set();
 
     filteredData.forEach((row) => {
-        if (row["ME Name"]) dropdowns["filter-me-name"].values.add(row["ME Name"]);
-        if (row["Day"]) dropdowns["filter-day"].values.add(row["Day"]);
+        if (row["ME Name"]) meSet.add(row["ME Name"]);
+        if (row["Day"]) daySet.add(row["Day"]);
     });
 
-    Object.keys(dropdowns).forEach((id) => {
-        populateSelectDropdown(id, dropdowns[id].values, dropdowns[id].header);
-    });
+    populateSelectDropdown("filter-me-name", meSet, "ME Name");
+    populateSelectDropdown("filter-day", daySet, "Day");
 }
 
+// Helper for dropdowns
 function populateSelectDropdown(id, optionsSet, headerName) {
     const dropdown = document.getElementById(id);
     const selectedValue = dropdown.value;
     dropdown.innerHTML = `<option value="">${headerName}</option>`;
-    optionsSet.forEach((option) => {
-        dropdown.innerHTML += `<option value="${option}" ${option === selectedValue ? "selected" : ""}>${option}</option>`;
-    });
+
+    Array.from(optionsSet)
+        .sort()
+        .forEach((option) => {
+            dropdown.innerHTML += `<option value="${option}" ${option === selectedValue ? "selected" : ""}>${option}</option>`;
+        });
 }
 
+// Reset filters
 function resetFilters() {
     filterButtonActive = false;
     document.getElementById("filter-button").style.backgroundColor = "#007bff";
-
     document.getElementById("search-bar").value = "";
-    document.querySelectorAll("select").forEach((dropdown) => dropdown.value = "");
-
+    document.querySelectorAll("select").forEach((dropdown) => (dropdown.value = ""));
     applyFilters();
 }
 
+// Debounce helper
 function debounce(func, delay = 300) {
     let timer;
     return function (...args) {
@@ -107,12 +112,13 @@ function debounce(func, delay = 300) {
     };
 }
 
+// Initialize event listeners
 function initialize() {
     document.getElementById("reset-button").addEventListener("click", resetFilters);
     document.getElementById("search-bar").addEventListener("input", debounce(applyFilters));
-    document.querySelectorAll("select").forEach((dropdown) => {
-        dropdown.addEventListener("change", applyFilters);
-    });
+    document.querySelectorAll("select").forEach((dropdown) =>
+        dropdown.addEventListener("change", applyFilters)
+    );
 
     document.getElementById("filter-button").addEventListener("click", () => {
         filterButtonActive = !filterButtonActive;
@@ -124,4 +130,5 @@ function initialize() {
     applyFilters();
 }
 
+// Start
 fetchData();
