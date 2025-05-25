@@ -3,7 +3,7 @@ let jsonData = [];
 
 async function fetchData() {
     try {
-        const response = await fetch("coverage.json");
+        const response = await fetch("shikhar.json");
         if (!response.ok) throw new Error("Failed to fetch data.");
         jsonData = await response.json();
         initialize();
