@@ -5,7 +5,7 @@ let jsonData = []; // Global variable to hold fetched JSON data
 // Function to fetch data from JSON file
 async function fetchData() {
     try {
-        const response = await fetch("coverage.json"); // Adjust if your JSON file is in a different location
+        const response = await fetch("shikhar.json"); // Adjust if your JSON file is in a different location
         if (!response.ok) throw new Error("Failed to fetch data.");
         jsonData = await response.json();
         initialize(); // Populate the table and filters after fetching data
