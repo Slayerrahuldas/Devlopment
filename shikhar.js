@@ -54,7 +54,7 @@ function applyFilters() {
             (searchQuery === "" ||
                 (row["HUL Code"] && row["HUL Code"].toLowerCase().includes(searchQuery)) ||
                 (row["HUL Outlet Name"] && row["HUL Outlet Name"].toLowerCase().includes(searchQuery))) &&
-            (!filterButtonActive || (row["Shikhar"] && parseFloat(row["Shikhar"]) < 500
+            (!filterButtonActive || (row["Shikhar"] && parseFloat(row["Shikhar"]) < 500))
         );
     });
 
@@ -81,9 +81,9 @@ function updateDropdowns(filteredData) {
 function populateSelectDropdown(id, optionsSet, headerName) {
     const dropdown = document.getElementById(id);
     const selectedValue = dropdown.value;
-    dropdown.innerHTML = `<option value="">${headerName}</option>`;
+    dropdown.innerHTML = <option value="">${headerName}</option>;
     optionsSet.forEach((option) => {
-        dropdown.innerHTML += `<option value="${option}" ${option === selectedValue ? "selected" : ""}>${option}</option>`;
+        dropdown.innerHTML += <option value="${option}" ${option === selectedValue ? "selected" : ""}>${option}</option>;
     });
 }
 
