@@ -54,7 +54,7 @@ function applyFilters() {
             (searchQuery === "" ||
                 (row["HUL Code"] && row["HUL Code"].toLowerCase().includes(searchQuery)) ||
                 (row["HUL Outlet Name"] && row["HUL Outlet Name"].toLowerCase().includes(searchQuery))) &&
-            (!filterButtonActive || (row["Shikhar"] && parseFloat(row["Shikhar"]) < 500))
+            (!filterButtonActive || (!isNaN(parseFloat(row["Shikhar"])) && parseFloat(row["Shikhar"]) < 500)
         );
     });
 
