@@ -1,40 +1,41 @@
-   // Track the state of filter buttons
 let filterButtonActive = false;
-let jsonData = []; // Global variable to hold fetched JSON data
+let jsonData = [];
 
-// Function to fetch data from JSON file
 async function fetchData() {
     try {
-        const response = await fetch("shikhar.json"); // Adjust if your JSON file is in a different location
+        const response = await fetch("coverage.json");
         if (!response.ok) throw new Error("Failed to fetch data.");
         jsonData = await response.json();
-        initialize(); // Populate the table and filters after fetching data
+        initialize();
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 }
 
-// Function to populate the table with dynamic numbering
 function populateTable(data) {
     const tableBody = document.getElementById("table-body");
-    tableBody.innerHTML = ""; // Clear existing data
+    tableBody.innerHTML = "";
 
     data.forEach((item, index) => {
         const row = document.createElement("tr");
 
-        // Add row number (dynamic numbering)
         const serialCell = document.createElement("td");
-        serialCell.textContent = data.length - index; // Reverse order
+        serialCell.textContent = data.length - index;
         row.appendChild(serialCell);
 
-        // Add data cells
         const columns = [
-            "HUL Code", "HUL Outlet Name", "ME Name", "Beat", "ECO", "BTD"
+            "HUL Code",
+            "HUL Outlet Name",
+            "Status",
+            "Shikhar",
+            "BTD",
+            "ME Name",
+            "Beat"
         ];
-        
+
         columns.forEach((key) => {
             const cell = document.createElement("td");
-            cell.textContent = item[key] !== undefined ? item[key] : "";
+            cell.textContent = item[key] ?? "";
             row.appendChild(cell);
         });
 
@@ -42,22 +43,19 @@ function populateTable(data) {
     });
 }
 
-// Function to apply all filters and update the table and dropdowns
 function applyFilters() {
-    let filteredData = jsonData.filter((row) => {
-        const filterValues = {
-            "ME Name": document.getElementById("filter-me-name").value,
-            "Day": document.getElementById("filter-day").value,
-        };
-        const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+    const meName = document.getElementById("filter-me-name").value;
+    const day = document.getElementById("filter-day").value;
+    const searchQuery = document.getElementById("search-bar").value.toLowerCase();
 
+    let filteredData = jsonData.filter((row) => {
         return (
-            (filterValues["ME Name"] === "" || row["ME Name"] === filterValues["ME Name"]) &&
-            (filterValues["Day"] === "" || row["Day"] === filterValues["Day"]) &&
+            (meName === "" || row["ME Name"] === meName) &&
+            (day === "" || row["Day"] === day) &&
             (searchQuery === "" ||
-                row["HUL Code"].toLowerCase().includes(searchQuery) ||
-                row["HUL Outlet Name"].toLowerCase().includes(searchQuery)) &&
-            (!filterButtonActive || row["ECO"] < 1000)
+                (row["HUL Code"] && row["HUL Code"].toLowerCase().includes(searchQuery)) ||
+                (row["HUL Outlet Name"] && row["HUL Outlet Name"].toLowerCase().includes(searchQuery))) &&
+            (!filterButtonActive || (row["Shikhar"] && parseFloat(row["Shikhar"]) < 500))
         );
     });
 
@@ -65,11 +63,10 @@ function applyFilters() {
     updateDropdowns(filteredData);
 }
 
-// Function to update dropdown options dynamically
 function updateDropdowns(filteredData) {
     const dropdowns = {
         "filter-me-name": { header: "ME Name", values: new Set() },
-        "filter-Day": { header: "Day", values: new Set() }
+        "filter-day": { header: "Day", values: new Set() }
     };
 
     filteredData.forEach((row) => {
@@ -82,29 +79,25 @@ function updateDropdowns(filteredData) {
     });
 }
 
-// Function to populate a single dropdown with a header as the default placeholder
 function populateSelectDropdown(id, optionsSet, headerName) {
     const dropdown = document.getElementById(id);
     const selectedValue = dropdown.value;
-    dropdown.innerHTML = `<option value="">${headerName}</option>`; // Use column name as default option
-
+    dropdown.innerHTML = `<option value="">${headerName}</option>`;
     optionsSet.forEach((option) => {
         dropdown.innerHTML += `<option value="${option}" ${option === selectedValue ? "selected" : ""}>${option}</option>`;
     });
 }
 
-// Function to reset filters
 function resetFilters() {
     filterButtonActive = false;
-    document.getElementById("filter-button").style.backgroundColor = "blue";
+    document.getElementById("filter-button").style.backgroundColor = "#007bff";
 
     document.getElementById("search-bar").value = "";
-    document.querySelectorAll("select").forEach((dropdown) => (dropdown.value = ""));
+    document.querySelectorAll("select").forEach((dropdown) => dropdown.value = "");
 
     applyFilters();
 }
 
-// Debounce function to optimize search performance
 function debounce(func, delay = 300) {
     let timer;
     return function (...args) {
@@ -113,15 +106,16 @@ function debounce(func, delay = 300) {
     };
 }
 
-// Initialize the table and filters
 function initialize() {
     document.getElementById("reset-button").addEventListener("click", resetFilters);
     document.getElementById("search-bar").addEventListener("input", debounce(applyFilters));
-    document.querySelectorAll("select").forEach((dropdown) => dropdown.addEventListener("change", applyFilters));
+    document.querySelectorAll("select").forEach((dropdown) => {
+        dropdown.addEventListener("change", applyFilters);
+    });
 
     document.getElementById("filter-button").addEventListener("click", () => {
-        filterButton1Active = !filterButtonActive;
-        document.getElementById("filter-button").style.backgroundColor = filterButtonActive ? "green" : "blue";
+        filterButtonActive = !filterButtonActive;
+        document.getElementById("filter-button").style.backgroundColor = filterButtonActive ? "green" : "#007bff";
         applyFilters();
     });
 
@@ -129,5 +123,4 @@ function initialize() {
     applyFilters();
 }
 
-// Fetch data and initialize the page
 fetchData();
