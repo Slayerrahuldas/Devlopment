@@ -3,34 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS CHANNEL DASHBOARD</title>
-    <link rel="stylesheet" href="css/home.css">
+    <title>BIG BET PACKS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
     <header>
-        <h1><b><i> CHANNEL DASHBOARD </i></b></h1>
+        <h1><b>Big Bets Dashboard</b></h1>
     </header>
-	
-	 <nav class="navbar">
+    
+    <nav class="navbar">
         <ul>
             <li><a href="index.html"><img src="images/home.png" alt="Home" width="20"></a></li>
             <li><a href="bigbets.html">Big Bets</a></li>
 	        <li><a href="top10.html">Top 10</a></li>
         </ul>
     </nav>
-	
-	<div class="container">
-      <div class="banner-container">
-        <a href="bigbets.html" class="banner">
-            <img src="images/shikhar.jpeg" alt="Big bets">
-            <div class="banner-text">Big Bets</div>
-        </a>
-        <a href="top10.html" class="banner">
-            <img src="images/top10.jpeg" alt="Top 10">
-            <div class="banner-text">Top 10</div>
-        </a>
-      </div>
-	</div>  
-	  
+    
+    <div class="container">
+
+        <div class="filters-container">
+            <select id="filter-rs-name">
+                <option value="">RS Name</option>
+            </select>
+           
+        </div>
+
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>BP Code</th>
+                    <th>BP Desc</th>
+                    <th>MRP</th>
+                    <th>RR</th>
+                    <th>MOC 4</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <script src="bigbets.js"></script>
 </body>
 </html>
